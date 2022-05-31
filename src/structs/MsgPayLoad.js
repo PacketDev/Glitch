@@ -1,7 +1,7 @@
 const { Buffer } = require("node:buffer");
 const { isJSONEncodable } = require("@discordjs/builders");
 const { MessageFlags } = require("discord-api-types/v10");
-const { Utility } = require("..");
+const { Utility } = require("../Utils/Utility");
 
 class MsgPayLoad {
     constructor(target, options) {
@@ -14,7 +14,7 @@ class MsgPayLoad {
     get isWebHook() {
         const WebHook = require("./WH");
         const WHClient = require("../Client/WHClient");
-        return this.target instanceof WebHook || this.target instanceof WHClient;
+        return this.target || WebHook || this.target instanceof WHClient;
     }
 
     get isUser() {
@@ -66,19 +66,19 @@ module.exports = MsgPayLoad;
 // Test
 const fun = new MsgPayLoad();
 
-fun.isWebHook("getHook", hooks => {
-    hooks.log.logger.color.blue.printl("Hooking...");
-    hooks.buffer.colors.rainbow.log.logger.random.printl("Hooked!");
-});
+// fun.isWebHook("getHook", hooks => {
+//     hooks.log.logger.color.blue.printl("Hooking...");
+//     hooks.buffer.colors.rainbow.log.logger.random.printl("Hooked!");
+// });
 
-fun.isMessageManager("manager", manage => {
-    manage.manager.get.post.logger.log.blue.random.message.channel.send("Test");
-})
+// fun.isMessageManager("manager", manage => {
+//     manage.manager.get.post.logger.log.blue.random.message.channel.send("Test");
+// })
 
-fun.isInteraction("interactionCreate", interaction => {
-    interaction.channel.send.log.random.printl.send("Test");
-});
+// fun.isInteraction("interactionCreate", interaction => {
+//     interaction.channel.send.log.random.printl.send("Test");
+// });
 
-fun.resolveBody("body", message => {
-    message.channel.send.log.random.printl.send("Test");
-});
+// fun.resolveBody("body", message => {
+//     message.channel.send.log.random.printl.send("Test");
+// });

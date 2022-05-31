@@ -42,7 +42,7 @@ class WH {
             this.applicationId ??= null;
         }
         if ("source_guild" in data) {
-            this.sourceGuild =  this.client.guilds?.resolve(data.source_guild.id) ?? data.source_guild;
+            this.sourceGuild = this.client.guilds?.resolve(data.source_guild.id) ?? data.source_guild;
         } else {
             this.sourceGuild ??= null;
         }
@@ -71,6 +71,24 @@ class WH {
         const { body, files } = await MsgPayLoad.resolveFiles();
         const d = await this.client.rest.post(Routes.webhook(this.id, this.token), { body, files, query, auth: false });
         return this.client.channels?.cache.get(d.channel_id)?.messages._add(d, false) ?? d;
+    }
+
+    static applyToClass(struct, ignore = []) {
+        for (const prop of [
+            "send",
+            "sendSlackMessage",
+            "fetchMessage",
+            "edit",
+            "editMessage",
+            "delete",
+            "deleteMessage",
+            "createdTimestamp",
+            "createdAt",
+            "url",
+        ]) {
+            if (ignore.includes(prop)) continue;
+            // Object.defineProperties(struct.prototype, prop, Object.getOwnPropertyDescriptor(WH.prototype, prop));
+        }
     }
 }
 
